@@ -1,0 +1,9 @@
+<div class="container">
+  @if (user) {
+    <h2>Bienvenido, {{ user.email }}</h2>
+    <p>Has iniciado sesión correctamente.</p>
+    <button (click)="logout()">Cerrar Sesión</button>
+  } @else {
+    <p>Cargando...</p>
+  }
+</div>
