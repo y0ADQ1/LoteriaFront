@@ -2,7 +2,35 @@
   @if (user) {
     <h2>Bienvenido, {{ user.email }}</h2>
     <p>Has iniciado sesión correctamente.</p>
-    <button (click)="logout()">Cerrar Sesión</button>
+
+    <div class="create-game">
+      <h3>Crear Nueva Partida</h3>
+      <form (ngSubmit)="crearPartida()">
+        <div>
+          <label for="maxJugadores">Máximo de Jugadores (4-16):</label>
+          <input
+            type="number"
+            id="maxJugadores"
+            [(ngModel)]="maxJugadores"
+            name="maxJugadores"
+            min="4"
+            max="16"
+            required
+          />
+        </div>
+        <button type="submit">Crear Partida</button>
+      </form>
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+    </div>
+
+    <!-- Embed the ListarPartidasComponent directly -->
+    <div class="list-games">
+      <app-listar-partidas></app-listar-partidas>
+    </div>
+
+    <button class="logout" (click)="logout()">Cerrar Sesión</button>
   } @else {
     <p>Cargando...</p>
   }

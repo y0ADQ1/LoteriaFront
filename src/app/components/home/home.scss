@@ -6,14 +6,64 @@
   border-radius: 5px;
   text-align: center;
 }
+
+.create-game {
+  margin: 20px 0;
+}
+
+.create-game div {
+  margin-bottom: 15px;
+}
+
+.list-games {
+  margin: 20px 0;
+}
+
+.list-games a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.list-games a:hover {
+  text-decoration: underline;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 button {
   padding: 10px;
-  background-color: #dc3545;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin: 10px 5px;
 }
+
 button:hover {
+  background-color: #0056b3;
+}
+
+button.logout {
+  background-color: #dc3545;
+}
+
+button.logout:hover {
   background-color: #c82333;
+}
+
+.error {
+  color: red;
 }

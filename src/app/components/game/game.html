@@ -1,0 +1,53 @@
+<div class="container">
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+
+  @if (gameState) {
+    <h2>Partida #{{ gameState.juego.id }}</h2>
+    <p>Estado: {{ gameState.juego.estado }}</p>
+    <p>Jugadores: {{ gameState.juego.totalJugadores }} / {{ gameState.juego.maxJugadores }}</p>
+
+    @if (gameState.juego.ganadorId) {
+      <p>¡Juego terminado! Ganador ID: {{ gameState.juego.ganadorId }}</p>
+    }
+
+    @if (gameState.juego.cartaActual) {
+      <div class="current-card">
+        <h3>Carta Actual</h3>
+        <p>{{ gameState.juego.cartaActual.nombre }} (#{{ gameState.juego.cartaActual.numero }})</p>
+        <img [src]="gameState.juego.cartaActual.imagen" alt="Carta actual" />
+      </div>
+    }
+
+    @if (gameState.cartilla) {
+      <div class="cartilla">
+        <h3>Tu Cartilla</h3>
+        <div class="cartilla-grid">
+          @for (carta of gameState.cartilla.cartas; track carta.id; let i = $index) {
+            <div
+              class="carta"
+              [class.marked]="gameState.cartilla.fichas[i]"
+              (click)="marcarFicha(i)"
+            >
+              <img [src]="carta.imagen" [alt]="carta.nombre" />
+              <p>{{ carta.nombre }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (gameState.usuario.esAnfitrion && gameState.juego.estado === 'esperando') {
+      <button (click)="iniciarPartida()">Iniciar Partida</button>
+    }
+
+    @if (gameState.usuario.esAnfitrion && gameState.juego.estado === 'iniciado') {
+      <button (click)="revelarCarta()">Revelar Siguiente Carta</button>
+    }
+
+    <button (click)="salirJuego()">Salir del Juego</button>
+  } @else {
+    <p>Cargando estado del juego...</p>
+  }
+</div>

@@ -7,6 +7,7 @@ interface Juego {
   estado: 'esperando' | 'iniciado' | 'finalizado';
   esAnfitrion?: boolean;
   totalJugadores?: number;
+  maxJugadores?: number;
   cartaActual?: MazoCarta | null;
   totalCartasAnunciadas?: number;
   ganadorId?: number | null;
@@ -25,7 +26,7 @@ interface JuegoResponse {
   juego?: Juego;
 }
 
-interface EstadoJuegoResponse {
+export interface EstadoJuegoResponse {
   message: string;
   juego: Juego;
   usuario: {
@@ -38,6 +39,30 @@ interface EstadoJuegoResponse {
   } | null;
 }
 
+interface PartidaListada {
+  id: number;
+  anfitrionEmail: string;
+  maxJugadores: number;
+  totalJugadores: number;
+  creadoEn: string;
+}
+
+export interface ListarPartidasResponse {
+  message: string;
+  partidas: PartidaListada[];
+  meta: {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+    first_page: number;
+    first_page_url: string;
+    last_page_url: string;
+    next_page_url: string | null;
+    previous_page_url: string | null;
+  };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,14 +71,19 @@ export class JuegoService {
 
   constructor(private http: HttpClient) {}
 
-  crearPartida(): Observable<JuegoResponse> {
-    console.log('Creating new game');
-    return this.http.post<JuegoResponse>(`${this.apiUrl}/crear`, {});
+  crearPartida(maxJugadores: number): Observable<JuegoResponse> {
+    console.log('Creando partida con maxJugadores:', maxJugadores);
+    return this.http.post<JuegoResponse>(`${this.apiUrl}/crear`, { maxJugadores });
   }
 
-  unirsePartida(codigoJuego: number): Observable<JuegoResponse> {
-    console.log('Joining game with code:', codigoJuego);
-    return this.http.post<JuegoResponse>(`${this.apiUrl}/unirse`, { codigoJuego });
+  unirsePartida(juegoId: number): Observable<JuegoResponse> {
+    console.log('Joining game with ID:', juegoId);
+    return this.http.post<JuegoResponse>(`${this.apiUrl}/unirse`, { juegoId });
+  }
+
+  listarPartidas(page: number = 1): Observable<ListarPartidasResponse> {
+    console.log('Fetching available games, page:', page);
+    return this.http.get<ListarPartidasResponse>(`${this.apiUrl}/listar?page=${page}`);
   }
 
   iniciarPartida(): Observable<JuegoResponse> {
