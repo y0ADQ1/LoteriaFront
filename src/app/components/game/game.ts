@@ -22,10 +22,14 @@ export class GameComponent implements OnInit {
     private juegoService: JuegoService,
     private authService: AuthService,
     private fichaService: FichaService,
-    private  cartaService: CartaService,
+    private cartaService: CartaService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
+
+  getImagenUrl(imagenPath: string): string {
+    return this.cartaService.getImagenUrl(imagenPath);
+  }
 
   ngOnInit() {
     this.gameId = Number(this.route.snapshot.paramMap.get('id'));

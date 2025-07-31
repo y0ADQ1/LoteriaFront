@@ -16,7 +16,7 @@
       <div class="current-card">
         <h3>Carta Actual</h3>
         <p>{{ gameState.juego.cartaActual.nombre }} (#{{ gameState.juego.cartaActual.numero }})</p>
-        <img [src]="gameState.juego.cartaActual.imagen" alt="Carta actual" />
+        <img [src]="getImagenUrl(gameState.juego.cartaActual.imagen)" alt="Carta actual" />
       </div>
     }
 
@@ -30,7 +30,7 @@
               [class.marked]="gameState.cartilla.fichas[i]"
               (click)="marcarFicha(i)"
             >
-              <img [src]="carta.imagen" [alt]="carta.nombre" />
+              <img [src]="getImagenUrl(carta.imagen)" [alt]="carta.nombre" />
               <p>{{ carta.nombre }}</p>
             </div>
           }
