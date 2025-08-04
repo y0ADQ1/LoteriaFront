@@ -18,10 +18,10 @@ interface RevelarCartaResponse {
 
 interface Cartilla {
   cartas: MazoCarta[];
-  fichas: boolean;
+  fichas: boolean[];
 }
 
-interface CartillaResponse {
+export interface CartillaResponse {
   message: string;
   cartillas: {
     jugador: {
@@ -38,12 +38,12 @@ interface CartillaResponse {
 })
 export class CartaService {
   private apiUrl = 'http://localhost:3333/juego';
-  private baseUrl = 'http://localhost:3333' //url base para los recursos estaticos
+  private baseUrl = 'http://localhost:3333';
 
   constructor(private http: HttpClient) { }
 
   getImagenUrl(imagenPath: string): string {
-    return `${this.baseUrl}${imagenPath}`
+    return `${this.baseUrl}${imagenPath}`;
   }
 
   revelarCarta(): Observable<RevelarCartaResponse> {

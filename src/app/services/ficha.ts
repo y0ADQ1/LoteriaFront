@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface MarcarFichaResponse {
+  expulsado: any;
   message: string;
   totalFichas: number;
   cartillaCompleta: boolean;

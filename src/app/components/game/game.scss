@@ -1,18 +1,16 @@
-.container {
-  max-width: 800px;
+.game-container {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
 .error {
   color: red;
+  font-weight: bold;
 }
 
-.current-card {
-  margin: 20px 0;
-  img {
-    max-width: 200px;
-  }
+.game-info {
+  margin-bottom: 20px;
 }
 
 .cartilla-grid {
@@ -26,22 +24,40 @@
   padding: 10px;
   text-align: center;
   cursor: pointer;
-  &.marked {
-    background-color: #e0ffe0;
-  }
-  img {
-    max-width: 100px;
-  }
+}
+
+.carta.marked {
+  background-color: #e0ffe0;
+}
+
+.carta img {
+  max-width: 100px;
+  height: auto;
+}
+
+.other-players {
+  margin-top: 20px;
+}
+
+.player-cartilla {
+  margin-bottom: 20px;
 }
 
 button {
-  margin: 10px;
   padding: 10px 20px;
+  margin: 5px;
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }

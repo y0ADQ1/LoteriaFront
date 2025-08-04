@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 interface Juego {
   id: number;
-  estado: 'esperando' | 'iniciado' | 'finalizado';
+  estado: 'esperando' | 'iniciado' | 'finalizado' | 'revancha_pendiente';
   esAnfitrion?: boolean;
-  totalJugadores?: number;
-  maxJugadores?: number;
+  totalJugadores: number;
+  maxJugadores: number;
   cartaActual?: MazoCarta | null;
   totalCartasAnunciadas?: number;
   ganadorId?: number | null;
+  ganadorEmail?: string | null;
   cartasAnunciadas?: number[];
+  tramposos: { id: number; email: string }[];
+  confirmacionesRevancha?: { id: number; email: string }[];
 }
 
 interface MazoCarta {
@@ -99,5 +103,30 @@ export class JuegoService {
   salirJuego(): Observable<{ message: string }> {
     console.log('Exiting game');
     return this.http.post<{ message: string }>(`${this.apiUrl}/salir`, {});
+  }
+
+  iniciarRevancha(): Observable<JuegoResponse> {
+    console.log('Iniciando propuesta de revancha');
+    return this.http.post<JuegoResponse>(`${this.apiUrl}/revancha`, {});
+  }
+
+  confirmarRevancha(aceptar: boolean): Observable<JuegoResponse> {
+    console.log('Sending confirmarRevancha request:', { aceptar, url: `${this.apiUrl}/confirmar-revancha` });
+    return this.http.post<JuegoResponse>(`${this.apiUrl}/confirmar-revancha`, { aceptar })
+      .pipe(
+        tap((response) => {
+          console.log('confirmarRevancha response:', response);
+        })
+      );
+  }
+
+  crearRevancha(): Observable<JuegoResponse> {
+    console.log('Creando revancha');
+    return this.http.post<JuegoResponse>(`${this.apiUrl}/crear-revancha`, {});
+  }
+
+  terminarPartida(): Observable<{ message: string }> {
+    console.log('Terminando partida');
+    return this.http.post<{ message: string }>(`${this.apiUrl}/terminar`, {});
   }
 }

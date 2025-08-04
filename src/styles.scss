@@ -1,1 +1,535 @@
-/* You can add global styles to this file, and also import other style files */
+// Mexican Lottery Theme - Minimalist Design
+// Colors inspired by traditional Mexican lottery cards and culture
+
+:root {
+  // Primary Mexican-inspired color palette
+  --primary-red: #d32f2f;
+  --primary-blue: #1976d2;
+  --primary-yellow: #ffc107;
+  --primary-green: #388e3c;
+  
+  // Neutral colors
+  --background: #fdfdf7;
+  --surface: #ffffff;
+  --surface-variant: #f5f5f0;
+  --outline: #d4af37;
+  --outline-variant: #e0e0e0;
+  
+  // Text colors
+  --on-surface: #2c1810;
+  --on-surface-variant: #5d4e37;
+  --on-primary: #ffffff;
+  
+  // Status colors
+  --error: #ba1a1a;
+  --success: #2e7d32;
+  --warning: #f57c00;
+  
+  // Shadows
+  --shadow-light: 0 2px 4px rgba(44, 24, 16, 0.1);
+  --shadow-medium: 0 4px 8px rgba(44, 24, 16, 0.15);
+  
+  // Border radius
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 12px;
+  
+  // Typography
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-size-small: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-large: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--background);
+  color: var(--on-surface);
+  line-height: 1.6;
+}
+
+// Base container styles
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--surface);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-light);
+  margin-bottom: 2rem;
+}
+
+.game-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--surface);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+}
+
+// Typography
+h1 {
+  font-size: var(--font-size-xxl);
+  color: var(--primary-red);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  border-bottom: 3px solid var(--outline);
+  padding-bottom: 1rem;
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+  color: var(--primary-blue);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: var(--font-size-large);
+  color: var(--on-surface);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+// Button styles
+button {
+  background-color: var(--primary-red);
+  color: var(--on-primary);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-small);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0.25rem;
+  
+  &:hover:not(:disabled) {
+    background-color: #b71c1c;
+    box-shadow: var(--shadow-light);
+  }
+  
+  &:disabled {
+    background-color: var(--outline-variant);
+    color: var(--on-surface-variant);
+    cursor: not-allowed;
+  }
+  
+  &.logout {
+    background-color: var(--error);
+    
+    &:hover {
+      background-color: #8e0000;
+    }
+  }
+}
+
+// Form styles
+form {
+  background-color: var(--surface-variant);
+  padding: 1.5rem;
+  border-radius: var(--radius-medium);
+  margin-bottom: 1.5rem;
+  
+  div {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--on-surface);
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--outline-variant);
+    border-radius: var(--radius-small);
+    font-size: var(--font-size-base);
+    background-color: var(--surface);
+    color: var(--on-surface);
+    
+    &:focus {
+      outline: none;
+      border-color: var(--outline);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    }
+  }
+}
+
+// Status messages
+.loading {
+  text-align: center;
+  color: var(--primary-blue);
+  font-size: var(--font-size-large);
+  padding: 2rem;
+  background-color: var(--surface-variant);
+  border-radius: var(--radius-medium);
+  margin: 1rem 0;
+}
+
+.error {
+  color: var(--error);
+  background-color: #ffebee;
+  padding: 1rem;
+  border-radius: var(--radius-small);
+  border-left: 4px solid var(--error);
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+// Game-specific styles
+.game-info {
+  background-color: var(--surface-variant);
+  padding: 1.5rem;
+  border-radius: var(--radius-medium);
+  margin-bottom: 2rem;
+  border-left: 4px solid var(--primary-yellow);
+  
+  p {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+}
+
+.carta-actual {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border-radius: var(--radius-medium);
+  border: 2px solid var(--outline);
+  text-align: center;
+  
+  img {
+    max-width: 200px;
+    height: auto;
+    border-radius: var(--radius-small);
+    box-shadow: var(--shadow-light);
+    margin-top: 1rem;
+  }
+  
+  p {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--primary-red);
+    margin-top: 1rem;
+  }
+}
+
+.host-controls {
+  background-color: var(--surface-variant);
+  padding: 1.5rem;
+  border-radius: var(--radius-medium);
+  margin-bottom: 2rem;
+  text-align: center;
+  border: 2px dashed var(--primary-blue);
+  
+  button {
+    margin: 0.5rem;
+  }
+}
+
+// Cartilla (lottery card) styles
+.cartilla {
+  margin: 2rem 0;
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-green);
+  }
+}
+
+.cartilla-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--surface-variant);
+  border-radius: var(--radius-medium);
+  border: 3px solid var(--outline);
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+.carta {
+  background-color: var(--surface);
+  border: 2px solid var(--outline-variant);
+  border-radius: var(--radius-small);
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  &:hover {
+    border-color: var(--outline);
+    box-shadow: var(--shadow-light);
+  }
+  
+  &.marked {
+    background-color: var(--primary-yellow);
+    border-color: var(--primary-red);
+    transform: scale(0.95);
+    
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      color: var(--primary-red);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+  
+  img {
+    width: 100%;
+    max-width: 80px;
+    height: auto;
+    border-radius: var(--radius-small);
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    color: var(--on-surface);
+    margin: 0;
+    line-height: 1.3;
+  }
+}
+
+// Other players section
+.other-players {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: var(--surface-variant);
+  border-radius: var(--radius-medium);
+  border-left: 4px solid var(--primary-blue);
+}
+
+.player-cartilla {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-light);
+  
+  h3 {
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+  }
+  
+  .cartilla-grid {
+    background-color: var(--surface-variant);
+    
+    .carta {
+      cursor: default;
+      
+      &:hover {
+        border-color: var(--outline-variant);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// Revancha (rematch) prompt
+.revancha-prompt {
+  background-color: var(--primary-yellow);
+  color: var(--on-surface);
+  padding: 2rem;
+  border-radius: var(--radius-medium);
+  text-align: center;
+  margin: 2rem 0;
+  border: 2px solid var(--primary-red);
+  
+  p {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  
+  button {
+    margin: 0.5rem;
+    
+    &:first-of-type {
+      background-color: var(--success);
+      
+      &:hover {
+        background-color: #1b5e20;
+      }
+    }
+    
+    &:last-of-type {
+      background-color: var(--error);
+      
+      &:hover {
+        background-color: #8e0000;
+      }
+    }
+  }
+}
+
+// Table styles
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--surface);
+  border-radius: var(--radius-medium);
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  margin: 1rem 0;
+  
+  thead {
+    background-color: var(--primary-red);
+    color: var(--on-primary);
+    
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--outline-variant);
+      
+      &:hover {
+        background-color: var(--surface-variant);
+      }
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    td {
+      padding: 1rem;
+      color: var(--on-surface);
+    }
+  }
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  
+  span {
+    font-weight: 500;
+    color: var(--on-surface-variant);
+  }
+}
+
+// Create game section
+.create-game {
+  background-color: var(--surface-variant);
+  padding: 2rem;
+  border-radius: var(--radius-medium);
+  margin: 2rem 0;
+  border-left: 4px solid var(--primary-green);
+}
+
+.list-games {
+  margin-top: 3rem;
+}
+
+// Links
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover {
+    text-decoration: underline;
+    color: #0d47a1;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .container, .game-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .cartilla-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .host-controls {
+    button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+  }
+  
+  table {
+    font-size: var(--font-size-small);
+    
+    th, td {
+      padding: 0.5rem;
+    }
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+// Focus styles for better accessibility
+button:focus,
+input:focus,
+a:focus {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 2px;
+}
+
+// Print styles
+@media print {
+  .host-controls,
+  .revancha-prompt,
+  button {
+    display: none;
+  }
+  
+  .container,
+  .game-container {
+    box-shadow: none;
+    border: 1px solid var(--outline-variant);
+  }
+}

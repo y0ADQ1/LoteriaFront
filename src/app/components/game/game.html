@@ -1,36 +1,59 @@
-<div class="container">
+<div class="game-container">
+  <h1>Juego de Lotería</h1>
+
+  @if (isLoading) {
+    <p class="loading">Cargando...</p>
+  }
+
   @if (errorMessage) {
-    <p class="error">{{ errorMessage }}</p>
+    <p class="message">{{ errorMessage }}</p>
   }
 
   @if (gameState) {
-    <h2>Partida #{{ gameState.juego.id }}</h2>
-    <p>Estado: {{ gameState.juego.estado }}</p>
-    <p>Jugadores: {{ gameState.juego.totalJugadores }} / {{ gameState.juego.maxJugadores }}</p>
+    <div class="game-info">
+      <p>Estado: {{ gameState.juego.estado }}</p>
+      <p>Jugadores: {{ gameState.juego.totalJugadores }} / {{ gameState.juego.maxJugadores }}</p>
+      <p>Tramposos: {{ getTrampososList() }}</p>
+      @if (gameState.juego.estado === 'revancha_pendiente') {
+        <p>Jugadores que confirmaron revancha: {{ getConfirmacionesRevanchaList() }}</p>
+        @if (gameState.usuario.esAnfitrion) {
+          <p>{{ getConfirmacionesStatus() }}</p>
+        }
+      }
+      @if (gameState.juego.cartaActual) {
+        <div class="carta-actual">
+          <h3>Carta Actual</h3>
+          <p>{{ gameState.juego.cartaActual.nombre }}</p>
+          <img [src]="getImagenUrl(gameState.juego.cartaActual.imagen)" alt="{{ gameState.juego.cartaActual.nombre }}" />
+        </div>
+      }
+    </div>
 
-    @if (gameState.juego.ganadorId) {
-      <p>¡Juego terminado! Ganador ID: {{ gameState.juego.ganadorId }}</p>
-    }
-
-    @if (gameState.juego.cartaActual) {
-      <div class="current-card">
-        <h3>Carta Actual</h3>
-        <p>{{ gameState.juego.cartaActual.nombre }} (#{{ gameState.juego.cartaActual.numero }})</p>
-        <img [src]="getImagenUrl(gameState.juego.cartaActual.imagen)" alt="Carta actual" />
+    @if (gameState.usuario.esAnfitrion) {
+      <div class="host-controls">
+        @if (gameState.juego.estado === 'esperando' || gameState.juego.estado === 'revancha_pendiente') {
+          <button (click)="iniciarPartida()">Iniciar Partida</button>
+        }
+        @if (gameState.juego.estado === 'iniciado') {
+          <button (click)="revelarCarta()">Revelar Carta</button>
+        }
+        @if (gameState.juego.estado === 'finalizado') {
+          <button (click)="iniciarRevancha()">Proponer Revancha</button>
+        }
+        @if (gameState.juego.estado === 'revancha_pendiente') {
+          <button (click)="crearRevancha()">Crear Revancha</button>
+        }
+        <button (click)="terminarPartida()">Terminar Partida</button>
       </div>
     }
 
     @if (gameState.cartilla) {
       <div class="cartilla">
-        <h3>Tu Cartilla</h3>
+        <h2>Tu Cartilla</h2>
         <div class="cartilla-grid">
           @for (carta of gameState.cartilla.cartas; track carta.id; let i = $index) {
-            <div
-              class="carta"
-              [class.marked]="gameState.cartilla.fichas[i]"
-              (click)="marcarFicha(i)"
-            >
-              <img [src]="getImagenUrl(carta.imagen)" [alt]="carta.nombre" />
+            <div class="carta" [class.marked]="gameState.cartilla.fichas[i]" (click)="marcarFicha(i)">
+              <img [src]="getImagenUrl(carta.imagen)" alt="{{ carta.nombre }}" />
               <p>{{ carta.nombre }}</p>
             </div>
           }
@@ -38,16 +61,38 @@
       </div>
     }
 
-    @if (gameState.usuario.esAnfitrion && gameState.juego.estado === 'esperando') {
-      <button (click)="iniciarPartida()">Iniciar Partida</button>
+    @if (gameState.juego.estado === 'revancha_pendiente' && !gameState.usuario.esAnfitrion && !hasConfirmedRevancha()) {
+      <div class="revancha-prompt">
+        <p>El anfitrión ha propuesto una revancha. ¿Quieres participar?</p>
+        <button (click)="confirmarRevancha(true)">Aceptar Revancha</button>
+        <button (click)="confirmarRevancha(false)">Rechazar Revancha</button>
+      </div>
     }
 
-    @if (gameState.usuario.esAnfitrion && gameState.juego.estado === 'iniciado') {
-      <button (click)="revelarCarta()">Revelar Siguiente Carta</button>
+    @if (gameState.usuario.esAnfitrion && otherPlayersCartillas.length > 0) {
+      <div class="other-players">
+        <h2>Cartillas de otros jugadores</h2>
+        @for (cartilla of otherPlayersCartillas; track cartilla.jugador.id) {
+          <div class="player-cartilla">
+            <h3>{{ cartilla.jugador.email }} {{ cartilla.jugador.esTramposo ? '(Tramposo)' : '' }}</h3>
+            @if (cartilla.cartilla) {
+              <div class="cartilla-grid">
+                @for (carta of cartilla.cartilla.cartas; track carta.id; let i = $index) {
+                  <div class="carta" [class.marked]="cartilla.cartilla.fichas[i]">
+                    <img [src]="getImagenUrl(carta.imagen)" alt="{{ carta.nombre }}" />
+                    <p>{{ carta.nombre }}</p>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p>No hay cartilla disponible</p>
+            }
+          </div>
+        }
+      </div>
     }
 
     <button (click)="salirJuego()">Salir del Juego</button>
-  } @else {
-    <p>Cargando estado del juego...</p>
+ 
   }
 </div>
